@@ -17,6 +17,6 @@ A modern ASP.NET Core MVC application with Identity authentication for user mana
 - Database: SQL Server
 - Authentication: ASP.NET Identity, JWT
 - UI: Bootstrap 5, Razor Pages
-- Email Service: SendGrid
+- Email Service: SendMailService
 - Version Control: GitHub
 
