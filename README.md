@@ -3,7 +3,7 @@ Different type of authentication implementation using .NET core
 
 MVCWebApp - ASP.NET Core Identity Application
 A modern ASP.NET Core MVC application with Identity authentication for user management, including login, registration, and role-based access.
-📌 Features
+- 📌 Features
 - User authentication via ASP.NET Core Identity
 - Role-based access control
 - Secure JWT authentication for APIs
@@ -12,7 +12,7 @@ A modern ASP.NET Core MVC application with Identity authentication for user mana
 - Email verification using SendGrid
 - Entity Framework Core Migrations for database updates
 - Responsive UI with Bootstrap
-🛠️ Tech Stack
+- 🛠️ Tech Stack
 - Framework: ASP.NET Core MVC
 - Database: SQL Server
 - Authentication: ASP.NET Identity, JWT
