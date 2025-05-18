@@ -4,21 +4,25 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// builder.Services.AddDefaultIdentity<IdentityUser>(options => 
-//     options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+    options.UseSqlServer(configuration["Database:ConnectionString"]));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = configuration["GoogleOAuth:ClientId"] ?? "DefaultClientId";
+        options.ClientSecret = configuration["GoogleOAuth:ClientSecret"] ?? "DefaultClientSecret";
+    });
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -52,8 +56,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -66,26 +68,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapRazorPages();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-app.MapRazorPages();
-
 app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthorization();
-
 app.MapStaticAssets();
-
-
-//app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

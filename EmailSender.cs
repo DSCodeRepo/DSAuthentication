@@ -13,10 +13,14 @@ public class EmailSender : IEmailSender
 
     public async Task SendEmailAsync(string email, string subject, string htmlMessage)
     {
+        var apiKey = _configuration["EmailSettings:SendGridApiKey"]; // Use the injected configuration
+        if (string.IsNullOrEmpty(apiKey))
+            throw new InvalidOperationException("SendGrid API Key is missing");
+
         var smtpClient = new SmtpClient("smtp.sendgrid.net")
         {
             Port = 587,
-            Credentials = new NetworkCredential("apikey", "keyvalue"),
+            Credentials = new NetworkCredential("apikey", apiKey),
             EnableSsl = true
         };
 
